@@ -1,0 +1,58 @@
+[
+	{
+	  "day":"Mon",
+	  "temp": {
+		  "high":85,
+		  "low":65
+    },
+    "id": 0
+  },
+	{
+	  "day":"Tues",
+	  "temp": {
+		  "high":90,
+		  "low":72
+	  },
+    "id": 1
+  },
+	{
+	  "day":"Wed",
+	  "temp": {
+		  "high":82,
+		  "low":79
+	  },
+    "id": 2
+  },
+	{
+	  "day":"Thur",
+	  "temp": {
+		  "high":78,
+		  "low":70
+	  },
+    "id": 3
+  },
+	{
+	  "day":"Fri",
+	  "temp": {
+		  "high":75,
+		  "low":69
+	  },
+    "id": 4
+  },
+	{
+	  "day":"Sat",
+	  "temp": {
+		  "high":80,
+		  "low":69
+	  },
+    "id": 5
+  },
+	{
+	  "day":"Sun",
+	  "temp": {
+		  "high":72,
+		  "low":61
+	  },
+    "id": 6
+  }
+]
