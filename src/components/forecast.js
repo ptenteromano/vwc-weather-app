@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import jsonData from "../db/weather";
 
-// REACT_APP_ is needed in order for key to be read
-const API_KEY = process.env.REACT_APP_API_KEY;
-console.log(API_KEY);
-
 class Forecast extends Component {
   state = {
     days: [...jsonData],

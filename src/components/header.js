@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <Navbar light expand="md">
+    <Navbar light color="blue" className="bg-primary mb-4" expand="md">
       <div className="container">
         <NavbarBrand href="/">VWC Weather App</NavbarBrand>
         <Nav navbar>
