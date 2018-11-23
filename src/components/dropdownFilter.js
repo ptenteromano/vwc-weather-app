@@ -5,6 +5,7 @@ import {
   DropdownMenu,
   DropdownToggle
 } from "reactstrap";
+import { Link } from "react-router-dom";
 import jsonData from "../db/weather";
 
 class DropdownFilter extends Component {
@@ -29,14 +30,16 @@ class DropdownFilter extends Component {
     return (
       <div style={{ display: "flex" }}>
         <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-          <DropdownToggle caret>Filter</DropdownToggle>
+          <DropdownToggle caret>Menu</DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Days</DropdownItem>
             {this.state.days.map(day => (
               <DropdownItem key={day.id}>{day.day}</DropdownItem>
             ))}
             <DropdownItem divider />
-            <DropdownItem>Home</DropdownItem>
+            <DropdownItem>
+              <Link to="/">Home</Link>
+            </DropdownItem>
           </DropdownMenu>
         </ButtonDropdown>
       </div>

@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import Forecast from "./forecast";
-import { Header } from "./header";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import GetSpeed from "./getspeed";
 
-class Main extends Component {
+class Home extends Component {
   render() {
     return (
       <div>
-        <Header />
         <Forecast />
+        <GetSpeed />
       </div>
     );
   }
 }
 
-export default Main;
+export default Home;

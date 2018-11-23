@@ -1,3 +1,9 @@
+.center-flex {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/* create-react-app styles */
 .App {
   text-align: center;
 }
