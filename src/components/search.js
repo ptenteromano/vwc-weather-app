@@ -60,10 +60,16 @@ class Search extends Component {
     });
   };
 
+  // set component and force render
+  renderResults() {
+    this.cityWeather = <CityWeather weather={this.state.response} />;
+    this.setState(this.state); // no change, but forces render
+    console.log("Fetch complete!");
+  }
+
   handleSubmit(event) {
     const city = this.state.city;
     event.preventDefault();
-    // console.log(weatherAPI + "weather?q=" + city + keyUrl);
     fetch(weatherAPI + "weather?q=" + city + keyUrl)
       .then(resp => resp.json())
       .then(myJson => {
@@ -72,9 +78,7 @@ class Search extends Component {
           response: myJson,
           cityFound: true
         });
-        // set the component to a local variable
-        this.cityWeather = <CityWeather weather={this.state.response} />;
-
+        this.renderResults();
         return myJson;
       })
       .catch(error => {
@@ -88,6 +92,8 @@ class Search extends Component {
   // }
 
   render() {
+    const isDone = this.state.cityFound;
+
     return (
       <div>
         <div className="container">
@@ -152,7 +158,7 @@ class Search extends Component {
             </Form>
           </div>
         </div>
-        <div>{this.state.cityFound ? this.cityWeather : ""}</div>
+        <div>{isDone ? this.cityWeather : ""}</div>
       </div>
     );
   }
