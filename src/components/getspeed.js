@@ -8,20 +8,25 @@ class GetSpeed extends Component {
 
   componentDidMount() {
     this.ticker = setInterval(() => this.speed(), 200);
-  }
-
-  speed() {
-    navigator.geolocation.watchPosition(data => {
+    this.watchId = navigator.geolocation.watchPosition(data => {
       console.log(data.coords);
       this.setState({
         speed: data.coords.speed
       });
     });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.ticker);
+    navigator.geolocation.clearWatch(this.watchId);
+  }
+
+  speed() {
     this.setState({ checker: this.state.checker + 1 });
-    console.log(this.state.checker);
     if (this.state.checker > 50) {
       console.log("Not moving!");
       clearInterval(this.ticker);
+      navigator.geolocation.clearWatch(this.watchId);
       this.setState({
         speed: "Not moving, speed checked stopped"
       });

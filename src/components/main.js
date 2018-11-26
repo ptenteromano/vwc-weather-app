@@ -11,6 +11,7 @@ class Main extends Component {
         <Header />
         <Switch>
           <Route path="/search" component={Search} />
+          <Route path="/weather" component={Home} />
           <Route path="/" component={Home} />
           <Redirect to="/" />
         </Switch>

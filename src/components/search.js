@@ -11,12 +11,13 @@ import {
   Col,
   FormFeedback
 } from "reactstrap";
+import CityWeather from "./cityWeather";
 
 // REACT_APP_ is needed in order for key to be read
 const API_KEY = process.env.REACT_APP_API_KEY;
 const weatherAPI = "https://api.openweathermap.org/data/2.5/";
 const keyUrl = "&appid=" + API_KEY;
-console.log(keyUrl);
+// console.log(keyUrl);
 
 class Search extends Component {
   constructor(props) {
@@ -25,15 +26,18 @@ class Search extends Component {
     this.state = {
       city: "",
       country: "",
-      error: false,
+      cityFound: false,
+      cityNames: [],
+      countryCodes: [],
+      response: {},
       touched: {
         city: false,
         country: false
       }
     };
-
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.cityWeather = null;
   }
 
   handleInputChange(event) {
@@ -54,20 +58,34 @@ class Search extends Component {
         [field]: true
       }
     });
-    console.log("blur!", this.state.touched);
   };
 
   handleSubmit(event) {
     const city = this.state.city;
     event.preventDefault();
-    console.log(weatherAPI + "weather?q=" + city + keyUrl);
-    return fetch(weatherAPI + "weather?q=" + city + keyUrl)
+    // console.log(weatherAPI + "weather?q=" + city + keyUrl);
+    fetch(weatherAPI + "weather?q=" + city + keyUrl)
       .then(resp => resp.json())
-      .then(myJson => JSON.stringify(myJson))
+      .then(myJson => {
+        console.log(myJson);
+        this.setState({
+          response: myJson,
+          cityFound: true
+        });
+        // set the component to a local variable
+        this.cityWeather = <CityWeather weather={this.state.response} />;
+
+        return myJson;
+      })
       .catch(error => {
         console.log(error, error.message);
       });
   }
+
+  // matchNames() {
+  // TODO: type suggestion auto finish
+  // use city.list.json from openweathermap
+  // }
 
   render() {
     return (
@@ -82,7 +100,6 @@ class Search extends Component {
             </Breadcrumb>
           </div>
         </div>
-
         <div className="col-md-4 offset-md-4">
           <h4 className="mb-4">Find Weather by City</h4>
         </div>
@@ -109,14 +126,14 @@ class Search extends Component {
 
               <FormGroup row>
                 <Label htmlFor="country" md={2}>
-                  Country
+                  Country Code
                 </Label>
                 <Col md={10}>
                   <Input
                     type="text"
                     id="country"
                     name="country"
-                    placeholder="Use only country codes"
+                    placeholder="Optional"
                     value={this.state.country}
                     onChange={this.handleInputChange}
                     onBlur={this.handleBlur("country")}
@@ -135,6 +152,7 @@ class Search extends Component {
             </Form>
           </div>
         </div>
+        <div>{this.state.cityFound ? this.cityWeather : ""}</div>
       </div>
     );
   }
