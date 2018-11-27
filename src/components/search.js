@@ -69,8 +69,27 @@ class Search extends Component {
 
   handleSubmit(event) {
     const city = this.state.city;
+    console.log(keyUrl);
     event.preventDefault();
     fetch(weatherAPI + "weather?q=" + city + keyUrl)
+      .then(
+        response => {
+          if (response.ok) return response;
+          else {
+            // handling response != ok
+            let error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        error => {
+          // handling no response
+          let errmess = new Error(error.message);
+          throw errmess;
+        }
+      )
       .then(resp => resp.json())
       .then(myJson => {
         console.log(myJson);
@@ -79,10 +98,13 @@ class Search extends Component {
           cityFound: true
         });
         this.renderResults();
+
         return myJson;
       })
       .catch(error => {
         console.log(error, error.message);
+        this.badRequest = <div>Error Finding City</div>;
+        this.setState({ cityFound: false });
       });
   }
 
@@ -158,7 +180,7 @@ class Search extends Component {
             </Form>
           </div>
         </div>
-        <div>{isDone ? this.cityWeather : ""}</div>
+        <div>{isDone ? this.cityWeather : this.badRequest}</div>
       </div>
     );
   }
