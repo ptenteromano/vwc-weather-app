@@ -17,7 +17,6 @@ import CityWeather from "./cityWeather";
 const API_KEY = process.env.REACT_APP_API_KEY;
 const weatherAPI = "https://api.openweathermap.org/data/2.5/";
 const keyUrl = "&appid=" + API_KEY;
-// console.log(keyUrl);
 
 class Search extends Component {
   constructor(props) {
@@ -29,7 +28,6 @@ class Search extends Component {
       cityFound: false,
       cityNames: [],
       countryCodes: [],
-      response: {},
       touched: {
         city: false,
         country: false
@@ -60,16 +58,8 @@ class Search extends Component {
     });
   };
 
-  // set component and force render
-  renderResults() {
-    this.cityWeather = <CityWeather weather={this.state.response} />;
-    this.setState(this.state); // no change, but forces render
-    console.log("Fetch complete!");
-  }
-
   handleSubmit(event) {
     const city = this.state.city;
-    console.log(keyUrl);
     event.preventDefault();
     fetch(weatherAPI + "weather?q=" + city + keyUrl)
       .then(
@@ -93,12 +83,11 @@ class Search extends Component {
       .then(resp => resp.json())
       .then(myJson => {
         console.log(myJson);
+        this.cityWeather = <CityWeather weather={myJson} />;
         this.setState({
-          response: myJson,
           cityFound: true
         });
-        this.renderResults();
-
+        console.log("Fetch complete!");
         return myJson;
       })
       .catch(error => {
@@ -114,7 +103,7 @@ class Search extends Component {
   // }
 
   render() {
-    const isDone = this.state.cityFound;
+    const isGood = this.state.cityFound;
 
     return (
       <div>
@@ -180,7 +169,7 @@ class Search extends Component {
             </Form>
           </div>
         </div>
-        <div>{isDone ? this.cityWeather : this.badRequest}</div>
+        <div>{isGood ? this.cityWeather : this.badRequest}</div>
       </div>
     );
   }
