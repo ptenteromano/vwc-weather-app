@@ -22,6 +22,17 @@ class CityWeather extends Component {
     this.toggleTemp = this.toggleTemp.bind(this);
   }
 
+  // need to reset temperature on update
+  componentDidUpdate(prevProps) {
+    if (this.props.weather.id !== prevProps.weather.id)
+      this.setState({
+        tempStyle: 0,
+        showTemp: this.getFahrenheit(this.props.weather.main.temp),
+        tempLogo: "°F",
+        kelvin: this.props.weather.main.temp
+      });
+  }
+
   getCelsius = kelvin => {
     return (kelvin - 273.15).toFixed(2);
   };
@@ -32,7 +43,6 @@ class CityWeather extends Component {
 
   convertUTC = utc => {
     let d = new Date(utc);
-
     return `${d.getHours() % 12}:${d.getMinutes()}`;
   };
 
@@ -54,11 +64,12 @@ class CityWeather extends Component {
 
   render() {
     const temp = `${this.state.showTemp} ${this.state.tempLogo}`;
+    const { weather } = this.props; // object destructuring
 
     return (
       <div className="container">
         <div className="col-md-8 offset-md-2">
-          <h2>Weather Data for {this.props.weather.name}</h2>
+          <h2>Weather Data for {weather.name}</h2>
           <ListGroup>
             <ListGroupItem>
               <ListGroupItemHeading>Current Temperature</ListGroupItemHeading>
@@ -80,33 +91,31 @@ class CityWeather extends Component {
             <ListGroupItem>
               <ListGroupItemHeading>Description</ListGroupItemHeading>
               <ListGroupItemText>
-                {this.props.weather.weather[0].main} <br />
-                {this.props.weather.weather[0].description}
+                {weather.weather[0].main} <br />
+                {weather.weather[0].description}
               </ListGroupItemText>
             </ListGroupItem>
 
             <ListGroupItem>
               <ListGroupItemHeading>Cloud Coverage</ListGroupItemHeading>
-              <ListGroupItemText>
-                {this.props.weather.clouds.all}%
-              </ListGroupItemText>
+              <ListGroupItemText>{weather.clouds.all}%</ListGroupItemText>
             </ListGroupItem>
 
             <ListGroupItem>
               <ListGroupItemHeading>More Details</ListGroupItemHeading>
               <ListGroupItemText>
-                Pressure: {this.props.weather.main.pressure} <br />
-                Humidity: {this.props.weather.main.humidity} % <br />
-                Wind Speed: {this.props.weather.wind.speed} M/S <br />
-                Wind Direction: {this.props.weather.wind.deg} Degrees <br />
+                Pressure: {weather.main.pressure} <br />
+                Humidity: {weather.main.humidity} % <br />
+                Wind Speed: {weather.wind.speed} M/S <br />
+                Wind Direction: {weather.wind.deg} Degrees <br />
               </ListGroupItemText>
             </ListGroupItem>
 
             <ListGroupItem>
               <ListGroupItemHeading>Location</ListGroupItemHeading>
               <ListGroupItemText>
-                Latitude: {this.props.weather.coord.lat} <br />
-                Longitude: {this.props.weather.coord.lon} <br />
+                Latitude: {weather.coord.lat} <br />
+                Longitude: {weather.coord.lon} <br />
                 {/* Sunrise: {this.convertUTC(this.props.weather.sys.sunrise)}
                 <br />
                 Sunset: {this.convertUTC(this.props.weather.sys.sunset)} <br /> */}
